@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Popup.css';
 
 interface PopupProps {
@@ -18,21 +20,26 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
   };
 
   const handleCreate = () => {
-    // Handle your create logic here
-    console.log('Creating stock:', stockName, 'at location:', stockLocation);
-
-    // Close the popup
+    if(stockName.trim() == "")
+    {
+      toast.warning("Enter stock name please!")
+      return;
+    }
+    if(stockLocation.trim() == "")
+    {
+      toast.warning("Enter stock location please!")
+      return;
+    }
+    toast.success(`Stock "${stockName}" created successfully!`);
     onClose();
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Close the popup if the overlay is clicked
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
-  // Close the popup when the Escape key is pressed
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       onClose();
@@ -40,10 +47,7 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
   };
 
   useEffect(() => {
-    // Add event listeners when the component mounts
     document.addEventListener('keydown', handleKeyPress);
-
-    // Clean up the event listeners when the component unmounts
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
@@ -58,7 +62,7 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
           </button>
           <h4>Create new stock location</h4>
         </div>
-        <hr className='hr'></hr>
+        <hr className="hr"></hr>
         <div className="popup-body">
           <label>
             Stock name:
@@ -69,7 +73,7 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
             <input type="text" value={stockLocation} onChange={handleStockLocationChange} />
           </label>
           <button className="create-button" onClick={handleCreate}>
-            Create - <span className='create-button-stock-name'>{stockName}</span> - Store
+            Create - <span className="create-button-stock-name">{stockName ? stockName : "New"}</span> - Store
           </button>
         </div>
       </div>

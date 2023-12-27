@@ -14,7 +14,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <button onClick={handleOpenPopup} className='btnToggle'>Open Popup</button>
+      <button onClick={handleOpenPopup} className='btnToggle'>Add New Stock</button>
       {isPopupOpen && <Popup onClose={handleClosePopup} />}
     </div>
   );
